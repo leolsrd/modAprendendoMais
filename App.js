@@ -33,6 +33,10 @@ export default function App() {
     );
   });
 
+  function enviarCadastro() {
+    alert('Enviou');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.containerTitle}>
@@ -96,7 +100,7 @@ export default function App() {
         </View>
 
         <View style={styles.containerBtn}>
-          <TouchableOpacity style={styles.btnEnviar}>
+          <TouchableOpacity style={styles.btnEnviar} onPress={enviarCadastro}>
             <Text style={styles.txtEnvia}>Enviar</Text>
           </TouchableOpacity>
         </View>
