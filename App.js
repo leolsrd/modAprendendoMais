@@ -1,10 +1,20 @@
+import Slider from '@react-native-community/slider';
 import {Picker} from '@react-native-picker/picker';
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Switch,
+  TouchableOpacity,
+} from 'react-native';
 
 export default function App() {
   const [nome, setNome] = useState('');
   const [idade, setIdade] = useState(0);
+  const [valorLimite, setValorLimite] = useState(0);
+  const [estudante, setEstudante] = useState(false);
   const [sexoSelecionado, setSexoSelecionado] = useState(0);
   const [sexo, setSexo] = useState([
     {key: 1, sexo: 'Masculino'},
@@ -13,7 +23,6 @@ export default function App() {
 
   let sexoItem = sexo.map((value, key) => {
     key++;
-    console.log(`Key: ${key}, Valor: ${value.sexo}`);
     return (
       <Picker.Item
         style={styles.pickerSexo}
@@ -53,8 +62,44 @@ export default function App() {
             {sexoItem}
           </Picker>
         </View>
-        {/* <Text>Sexo selecionado: {sexo[sexoSelecionado - 1].sexo}</Text> */}
-        <Text>Sexo selecionado: {sexoSelecionado}</Text>
+
+        <Text style={styles.txtSlider}>Informe seu saldo atual:</Text>
+        <Slider
+          style={styles.Slider}
+          minimumValue={0}
+          maximumValue={10000}
+          lowerLimit={0}
+          step={valorLimite >= 1000 ? 50 : 0}
+          value={valorLimite}
+          onValueChange={valorSelecionado => setValorLimite(valorSelecionado)}
+        />
+        <Text style={styles.txtSaldo}>
+          {valorLimite <= 1000
+            ? `Saldo: ${valorLimite.toFixed(2)}`
+            : `Saldo aproximado: ${valorLimite.toFixed(2)}`}
+        </Text>
+
+        <View style={styles.containerSwitch}>
+          <View style={styles.rowSwitch}>
+            <View style={styles.col1Switch}>
+              <Text style={styles.txtSwitch}>
+                Estudante: {estudante ? 'SIM' : 'NÃO'}
+              </Text>
+            </View>
+            <View style={styles.col2Switch}>
+              <Switch
+                value={estudante}
+                onValueChange={valSelecionado => setEstudante(valSelecionado)}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.containerBtn}>
+          <TouchableOpacity style={styles.btnEnviar}>
+            <Text style={styles.txtEnvia}>Enviar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -80,7 +125,7 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: '#FFF',
     borderRadius: 6,
-    height: 400,
+    height: 500,
   },
   txtInput: {
     color: '#067a6e',
@@ -104,5 +149,71 @@ const styles = StyleSheet.create({
   pickerSexo: {
     fontSize: 18,
     color: '#067a6e',
+  },
+  txtSlider: {
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    fontSize: 18,
+    color: '#067a6e',
+  },
+  Slider: {
+    marginTop: 10,
+    marginRight: 10,
+    marginLeft: 10,
+    color: '#067a6e',
+  },
+  txtSaldo: {
+    marginTop: 10,
+    marginLeft: 20,
+    fontSize: 18,
+    color: '#067a6e',
+  },
+  containerSwitch: {
+    flex: 2,
+  },
+  rowSwitch: {
+    flexDirection: 'row',
+  },
+  col1Switch: {
+    flex: 0.8,
+  },
+  col2Switch: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginTop: 20,
+  },
+  txtSwitch: {
+    marginTop: 20,
+    marginRight: 20,
+    marginLeft: 20,
+    fontSize: 18,
+    color: '#067a6e',
+  },
+  containerBtn: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginBottom: 30,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  btnEnviar: {
+    height: 50,
+    width: 100,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 12,
+    paddingLeft: 12,
+    borderWidth: 1,
+    borderColor: '#067a6e',
+    backgroundColor: '#067a6e',
+    borderRadius: 6,
+  },
+  txtEnvia: {
+    textAlign: 'center',
+    color: '#FFF',
+    fontSize: 18,
   },
 });
