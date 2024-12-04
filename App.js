@@ -13,7 +13,7 @@ import {
 export default function App() {
   const [nome, setNome] = useState('');
   const [idade, setIdade] = useState(0);
-  const [valorLimite, setValorLimite] = useState(0);
+  const [valorSaldo, setValorSaldo] = useState(0);
   const [estudante, setEstudante] = useState(false);
   const [sexoSelecionado, setSexoSelecionado] = useState(0);
   const [sexo, setSexo] = useState([
@@ -25,7 +25,7 @@ export default function App() {
     key++;
     return (
       <Picker.Item
-        style={styles.pickerSexo}
+        style={styles.pickerSexoItem}
         key={key}
         value={key}
         label={value.sexo}
@@ -34,7 +34,12 @@ export default function App() {
   });
 
   function enviarCadastro() {
-    alert('Enviou');
+    alert(`\n
+      Nome: ${nome}
+      Idade: ${idade}
+      Sexo: ${sexoSelecionado}
+      Saldo atual: ${valorSaldo}
+      Estudante: ${estudante ? 'Sim' : 'Não'}`);
   }
 
   return (
@@ -46,19 +51,20 @@ export default function App() {
       <View style={styles.containerForm}>
         <TextInput
           style={[styles.txtInput, {marginTop: 30}]}
-          onChange={text => setNome(text)}
+          onChangeText={text => setNome(text)}
           placeholder="Digite seu nome"
           placeholderTextColor={'#067a6e'}
         />
         <TextInput
           style={styles.txtInput}
-          onChange={text => setIdade(text)}
+          onChangeText={text => setIdade(text)}
           placeholder="Digite sua idade"
           placeholderTextColor={'#067a6e'}
         />
 
         <View style={styles.containerPicker}>
           <Picker
+            dropdownIconColor={'#067a6e'}
             selectedValue={sexoSelecionado}
             onValueChange={(itemValue, itemIndex) =>
               setSexoSelecionado(itemValue)
@@ -69,18 +75,20 @@ export default function App() {
 
         <Text style={styles.txtSlider}>Informe seu saldo atual:</Text>
         <Slider
+          maximumTrackTintColor="#848484"
+          // minimumTrackTintColor="yellow"
           style={styles.Slider}
           minimumValue={0}
-          maximumValue={10000}
+          maximumValue={5000}
           lowerLimit={0}
-          step={valorLimite >= 1000 ? 50 : 0}
-          value={valorLimite}
-          onValueChange={valorSelecionado => setValorLimite(valorSelecionado)}
+          step={valorSaldo >= 1000 ? 100 : 10}
+          value={valorSaldo}
+          onValueChange={valorSelecionado => setValorSaldo(valorSelecionado)}
         />
         <Text style={styles.txtSaldo}>
-          {valorLimite <= 1000
-            ? `Saldo: ${valorLimite.toFixed(2)}`
-            : `Saldo aproximado: ${valorLimite.toFixed(2)}`}
+          {valorSaldo <= 1000
+            ? `Saldo: ${valorSaldo.toFixed(2)}`
+            : `Saldo aproximado: ${valorSaldo.toFixed(2)}`}
         </Text>
 
         <View style={styles.containerSwitch}>
@@ -92,6 +100,7 @@ export default function App() {
             </View>
             <View style={styles.col2Switch}>
               <Switch
+                trackColor={{false: '#dfdfdf', true: '#067a6e'}}
                 value={estudante}
                 onValueChange={valSelecionado => setEstudante(valSelecionado)}
               />
@@ -145,14 +154,16 @@ const styles = StyleSheet.create({
   containerPicker: {
     borderWidth: 1,
     borderColor: '#067a6e',
+    padding: 1,
     marginLeft: 20,
     marginTop: 20,
     marginRight: 20,
     borderRadius: 6,
   },
-  pickerSexo: {
+  pickerSexoItem: {
     fontSize: 18,
     color: '#067a6e',
+    backgroundColor: '#fff',
   },
   txtSlider: {
     marginTop: 20,
